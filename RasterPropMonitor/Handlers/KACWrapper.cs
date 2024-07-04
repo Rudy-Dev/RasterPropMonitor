@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using Unity;
 using System.Text;
 
 // TODO: Change this namespace to something specific to your plugin here.
@@ -99,7 +100,7 @@ namespace JSI
                 //No TimeEntry or alarmchoice options = need a newer version
                 NeedUpgrade = true;
             }
-            
+
             //now the Alarm Type
             // MOARdV: work around Contract Configurator - induced crash:
             //KACAlarmType = AssemblyLoader.loadedAssemblies
@@ -122,9 +123,12 @@ namespace JSI
             //now grab the running instance
             LogFormatted("Got Assembly Types, grabbing Instance");
 
-            try {
+            try
+            {
                 actualKAC = KACType.GetField("APIInstance", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 NeedUpgrade = true;
                 LogFormatted("No APIInstance found - most likely you have KAC v2 installed");
                 //throw;
@@ -190,7 +194,7 @@ namespace JSI
                 //DrawTimeEntryMethod = KACType.GetMethod("DrawTimeEntryAPI", BindingFlags.Public | BindingFlags.Instance);
                 //LogFormatted_DebugOnly("Success: " + (DrawTimeEntryMethod != null).ToString());
 
-				//Commenting out rubbish lines
+                //Commenting out rubbish lines
                 //MethodInfo[] mis = KACType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
                 //foreach (MethodInfo mi in mis)
                 //{
@@ -482,7 +486,7 @@ namespace JSI
                     get { return (String)XferTargetBodyNameField.GetValue(actualAlarm); }
                     set { XferTargetBodyNameField.SetValue(actualAlarm, value); }
                 }
-                
+
                 private FieldInfo AlarmTypeField;
                 /// <summary>
                 /// What type of Alarm is this - affects icon displayed and some calc options
@@ -495,7 +499,7 @@ namespace JSI
                 /// </summary>
                 public Double AlarmTime
                 {
-                    get { return (Double)AlarmTimeProperty.GetValue(actualAlarm,null); }
+                    get { return (Double)AlarmTimeProperty.GetValue(actualAlarm, null); }
                     set { AlarmTimeProperty.SetValue(actualAlarm, value, null); }
                 }
 
@@ -582,12 +586,12 @@ namespace JSI
 
             public enum AlarmActionEnum
             {
-                [Description("Do Nothing-Delete When Past")]        DoNothingDeleteWhenPassed,
-                [Description("Do Nothing")]                         DoNothing,
-                [Description("Message Only-No Affect on warp")]     MessageOnly,
-                [Description("Kill Warp Only-No Message")]          KillWarpOnly,
-                [Description("Kill Warp and Message")]              KillWarp,
-                [Description("Pause Game and Message")]             PauseGame,
+                [Description("Do Nothing-Delete When Past")] DoNothingDeleteWhenPassed,
+                [Description("Do Nothing")] DoNothing,
+                [Description("Message Only-No Affect on warp")] MessageOnly,
+                [Description("Kill Warp Only-No Message")] KillWarpOnly,
+                [Description("Kill Warp and Message")] KillWarp,
+                [Description("Pause Game and Message")] PauseGame,
             }
 
             public enum TimeEntryPrecisionEnum
